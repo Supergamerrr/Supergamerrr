@@ -13,4 +13,5 @@ if {$SETTING} is "test2";
 then
       echo "yea"
 fi
+echo "end"
 exit
