@@ -1,17 +1,2 @@
-echo "Создатель: loolkkekr"
-echo "Канал: https:/youtube.com/c/loolkkekr2akk"
-echo "Какую ты желаешь установить операционную систему?"
-echo "- Windows 10"
-echo "- Windows 7"
-echo "- Linux Kali"
-read -p "Я желаю: " SETTING
-if {$SETTING} is "test";
-then
-      echo "test"
-fi
-if {$SETTING} is "test2";
-then
-      echo "yea"
-fi
-echo "end"
-exit
+echo "Instruction how found code"
+echo "Link: https://www.youtube.com/watch?v=SqKN7yOZ7pg"
