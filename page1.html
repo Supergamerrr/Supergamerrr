@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Page</title>
+<meta name="generator" content="WYSIWYG Web Builder 17 Trial Version - https://www.wysiwygwebbuilder.com">
+<link href="Untitled1.css" rel="stylesheet">
+<link href="page1.css" rel="stylesheet">
+<script src="jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function()
+{
+   function resizeVideo() 
+   {
+      var ratio = 16/9;
+      var widthViewPort = $(window).width();
+      var heightViewPort = $(window).height();
+      var width, height;
+      var $player = $('#MediaPlayer1');
+      if (widthViewPort / ratio < heightViewPort)
+      {
+         width = Math.ceil(heightViewPort * ratio);
+         $player.width(width).height(heightViewPort).css({left: (widthViewPort - width) / 2, top: 0});
+      }
+      else
+      {
+         height = Math.ceil(widthViewPort / ratio);
+         $player.width(widthViewPort).height(height).css({left: 0, top: (heightViewPort - height) / 2});
+      }
+   }
+   $(window).on('resize', function() 
+   {
+      resizeVideo();
+   })
+   resizeVideo();
+});
+</script>
+</head>
+<body>
+<a href="https://www.wysiwygwebbuilder.com" target="_blank"><img src="images/builtwithwwb17.png" alt="WYSIWYG Web Builder" style="position:absolute;left:0px;top:1226px;margin: 0;border-width:0;z-index:250" width="16" height="16"></a>
+<div id="wb_MediaPlayer1" style="position:absolute;left:0px;top:0px;width:862px;height:484px;z-index:1;">
+<video id="MediaPlayer1" autoplay controls>
+<source src="ngrok.mp4" type="video/mp4">
+</video>
+</div>
+</body>
+</html>
