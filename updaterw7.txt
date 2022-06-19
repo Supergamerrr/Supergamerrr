@@ -1,108 +1,20 @@
-while read -r var value; do
-FULL="$var=$value"
-  export $var
-done < $HOME/windows.ini
-clear
-echo "---------------------------------------------------"
-echo "Напишите любую из списка команд. Что-бы начать запуск Windows 7 просто нажмите Enter."
-echo "update - Проверить или установить обновления скрипта. Рекомендую делать это каждый день."
-echo "reinstall - Запустить установщик. Пишите данную команду если по каким то причинам Windows 7 отказывается запускаться."
-echo "config - Изменить настройки CPU,RAM,VGA виртуальной машины."
-echo "---------------------------------------------------"
-read -p "> " select
-if [ "$select" == "update" ]; then
-	echo "Не готово! Возможно на самом деле ваша версия скрипта ОЧЕНЬ слишком старая что ж в ней нету даже команды update?"
-    sleep 5
-    echo "Запуск Windows 7 через несколько секунд. Что-бы отменить нажмите Ctrl + C"
-    sleep 5
-fi
-if [ "$select" == "config" ]; then
-    clear
-    echo "---------------------------------------------------"
-	echo "Напишите в терминал что вы хотите изменить. Что-бы начать запуск Windows 7 просто нажмите Enter."
-	echo "cpu - Открыть настройки CPU."
-	echo "ram - Открыть настройки RAM."
-	echo "vga - На данный момент это нельзя изменить. По умолчанию стоит VMware"
-    echo "info - Показать информацию виртуальной машины"
-	echo "---------------------------------------------------"
-    read -p "> " select
-    if [ "$select" == "info" ]; then
-    	echo "Образ: Windows 7 (Да! Ты правильно думаешь! Скоро можно будет выбрать любую ос!)"
-        echo "VGA: По умолчанию стоит VMware."
-    	echo "Процессор: $CORES ядер, $THREADS потоков."
-    	echo "Оперативная память: $RAM мб."
-        exit
-    fi
-    if [ "$select" == "cpu" ]; then
-        echo "ВНИМАНИЕ! Количество ядер не может привышать количество гб оперативной памяти. Установлено $RAM мб оперативной памяти."
-		read -p "Windows 7 не может запустить если больше 256 ядер. Сколько ядер вы желайте? " CORES
-    	echo "CORES=$CORES">>windows.ini
-		clear
-		echo "ВНИМАНИЕ! НЕ СТАВЬТЕ РЕАЛЬНОЕ КОЛИЧЕСТВО ПОТОКОВ ПРОЦЕССОРА. ЕСЛИ ПЕРЕБОРЩИТЬ ТО ВИРТУАЛЬНАЯ МАШИНА ПО ПРОСТУ НЕ ЗАПУСТИТСЯ. ЕСЛИ ВСЁ РАБОТАЕТ НА ДВУХ ПОТОКАХ ТО ПОПРОБУЙТЕ НА ОДИН ПОТОК БОЛЬШЕ СДЕЛАТЬ. СТАВЬТЕ ЭКСПЕРЕМЕНТЫ НАД ПОТОКАМИ."
-		read -p "Сколько виртуальная машина имеет право использовать потоков процессора? " THREADS
-    	echo "THREADS=$THREADS">>windows.ini
-        clear
-        echo "Изменения были сохранены!"
-        exit
-    fi
-fi
-if [ "$select" == "reinstall" ]; then
-	echo "Вы потеряйте ВСЕ ваши данные. Скрипт должен быть запущен от имени root. Продолжаем? Принять: Y Отказаться: N"
-	read -p "> " select2
-	if [ "$select2" == "Y" ]; then
-    rm -r windows.ini
-	echo "Установка была запущена. Не выключайте сервер, закрывайте страницу/терминал. Время установки зависит от скорости интернета."
-    echo "Установка образа Windows 7 начнётся через несколько секунд."
-    sleep 6
-	wget -O w7x64.img https://bit.ly/akuhnetw7X64
-	echo "Установка ngrok..."
-	wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip > /dev/null 2>&1
-	unzip ngrok-stable-linux-amd64.zip > /dev/null 2>&1
-    read -p "Токен ngrok: " ngrok
-	echo "ngroktoken=$ngrok">>windows.ini
-    ./ngrok authtoken $ngrok
-	nohup ./ngrok tcp 3388 &>/dev/null &
-    echo "Установка программы qemu что-бы создать и запустить виртуальную машину."
-	apt install qemu-kvm qemu
-    clear
-    echo "Давайте теперь настройм виртуальную машину!"
-    sleep 2
-    echo "Сколько мб оперативной памяти использовать? 4 гб требует 9 гб оперативной памяти так как qemu будет использовать 5.5 гб оперативной памяти."
-    echo "Windows 7 не запустится если больше 192 гб (196608 мб). "
-	read -p "> " RAM
-    echo "RAM=$RAM">>windows.ini
-    RAM2=M
-    echo "ВНИМАНИЕ! Количество ядер не может привышать количество гб оперативной памяти."
-	read -p "Windows 7 не может запустить если больше 256 ядер. Сколько ядер вы желайте? " CORES
-    echo "CORES=$CORES">>windows.ini
+if [[ `id -u` -ne 0 ]] ; then echo "Скрипт должен быть запущен от имени root. Напиши su и запусти опять." ; exit 1 ; fi
+echo "Скрипт должен быть запущен от имени root. Вы запустили скрипт от имени root? Да: Y Нет: N"
+read -p "> " select2
+if [ "$select2" == "Y" ]; then
+	#if ! [ -f w7x64.img ];
+	#then
+    	 #echo "Образ Windows 7 не найден или вы вообще её не устанавливали?"
+   	 #echo "Данная информация была сохранена. После установки скрипта будут предложены врианты восстановления."
+	 #echo "Установка будет продолжена через несколько секунд."
+   	 #sleep 6
+   	 #exit
+	#fi
+	echo "Установка скрипта..."
+	wget -O startw7.sh https://raw.githubusercontent.com/Supergamerrr/Supergamerrr/main/w7.txt &> /dev/null
+	chmod +x startw7.sh
 	clear
-	echo "ВНИМАНИЕ! НЕ СТАВЬТЕ РЕАЛЬНОЕ КОЛИЧЕСТВО ПОТОКОВ ПРОЦЕССОРА. ЕСЛИ ПЕРЕБОРЩИТЬ ТО ВИРТУАЛЬНАЯ МАШИНА ПО ПРОСТУ НЕ ЗАПУСТИТСЯ. ЕСЛИ ВСЁ РАБОТАЕТ НА ДВУХ ПОТОКАХ ТО ПОПРОБУЙТЕ НА ОДИН ПОТОК БОЛЬШЕ СДЕЛАТЬ. СТАВЬТЕ ЭКСПЕРЕМЕНТЫ НАД ПОТОКАМИ."
-	read -p "Сколько виртуальная машина имеет право использовать потоков процессора? " THREADS
-    echo "THREADS=$THREADS">>windows.ini
-    #read -p "ВНИМАНИЕ! файл windows.ini имеет пустые строки. Уберите их и после этого нажмите в консоле Enter иначе виртуальная машина не будет запущена." THREADS
-    #read -p "> " select
-    fi
-    echo "Выходим с установочного режима..."
+	echo "Установка была завершена!"
+	echo "Напиши ./startw7.sh"
+	exit
 fi
-if ! [ -f w7x64.img ];
-then
-	echo "Образ Windows 7 не найден."
-    echo "Запустите опять скрипт и напишите reinstall что-бы начать переустановку."
-    exit
-fi
-#while read -r var value; do
-#if ! [ "$-r" == "" ]; then
-#FULL="$var=$value"
-#  export $var
-#else
-#echo "line empty"
-#fi
-#done < $HOME/windows.ini
-RAM2=M
-echo $RAM$RAM2
-echo "Вот ваш IP! Если его тут нету то подождите 5-15 секунд."
-curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"tcp:..([^"]*).*/\1/p'
-echo "Нажми Enter что-бы начать запуск Windows 7. Не забудь что Ctrl + C это завершение скрипта :)"
-echo "Перед подключением подожди хотя-бы 2 минуты что-бы Windows 7 запустилась."
-read -p "> "
-qemu-system-x86_64 -hda w7x64.img -m $RAM$RAM2 -smp cores=$CORES,threads=$THREADS -net user,hostfwd=tcp::3388-:3389 -net nic -object rng-random,id=rng0,filename=/dev/urandom -device virtio-rng-pci,rng=rng0 -vga vmware -nographic
