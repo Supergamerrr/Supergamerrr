@@ -67,7 +67,8 @@ if [ "$select" == "reinstall" ]; then
 	echo "Установка ngrok..."
 	wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip > /dev/null 2>&1
 	unzip ngrok-stable-linux-amd64.zip > /dev/null 2>&1
-    read -p "Токен ngrok: " ngrok
+    read -p "Напишите свой токен Ngrok. Вы можете узнать ваш токен тут: https://supergamerrr.github.io/Supergamerrr/index.html" ngrok
+	read -p "> " ngrok
 	echo "ngroktoken=$ngrok">>windows.ini
     ./ngrok authtoken $ngrok
 	nohup ./ngrok tcp 3388 &>/dev/null &
