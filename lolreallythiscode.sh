@@ -171,6 +171,7 @@ echo " "
 echo "${bold}${cyan}If you can't reach terminal in the web broser"
 echo "${bold}${cyan}try do delete all files except code.txt and server.jar"
 echo "${bold}${cyan}START-COMMAND=$START-COMMAND"
+echo "${lightblue}Терминал был запущен без proot. Был запущен с bash"
 echo "${green}--------------"
 echo " "
 if [ -f $HOME/start.sh ];
@@ -193,9 +194,8 @@ then
       echo "${lightblue}OS not selected Using: ${yellow}Default container"
       cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" bash
       echo "${lightblue}Selected OS: ${yellow}$OS"
-      echo "${lightblue}Терминал был запущен без proot. Был запущен с bash"
       proot -S . supervisord -n &
-      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" bash
+      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" ssh
 fi
 fi
 curl -sSLo $HOME/bin/systemctl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl3.py
