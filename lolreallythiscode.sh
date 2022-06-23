@@ -192,10 +192,10 @@ if [ "$OS" = "Default" ] || [ "$OS" = "Def" ] || [ "$OS" = "default" ];
 then
       echo "${lightblue}OS not selected Using: ${yellow}Default container"
       cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" bash
-else
       echo "${lightblue}Selected OS: ${yellow}$OS"
+      echo "${lightblue}Терминал был запущен без proot. Был запущен с bash"
       proot -S . supervisord -n &
-      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" proot -S . /bin/bash
+      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" bash
 fi
 fi
 curl -sSLo $HOME/bin/systemctl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl3.py
