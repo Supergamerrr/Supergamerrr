@@ -84,12 +84,12 @@ OS=""
 if ! [ -f $HOME/config.ini ];
 then
 echo "Creating config file"
-echo "OS=Default">$HOME/config.ini
+echo "OS=Debian">$HOME/config.ini
 echo "LocalIP=$INTERNAL_IP">>$HOME/config.ini
 echo "IP=$SERVER_IP">>$HOME/config.ini
 echo "PORT=$SERVER_PORT">>$HOME/config.ini
-echo "SHELL_PASSWORD=123456789">>$HOME/config.ini
-echo "SHELL_USERNAME=ADMIN">>$HOME/config.ini
+echo "SHELL_PASSWORD=5454">>$HOME/config.ini
+echo "SHELL_USERNAME=root">>$HOME/config.ini
 echo "START-COMMAND=NaN">>$HOME/config.ini
 
 echo "Default">$HOME/bin/state.txt
