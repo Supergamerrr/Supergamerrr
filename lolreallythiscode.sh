@@ -195,7 +195,7 @@ then
 else
       echo "${lightblue}Selected OS: ${yellow}$OS"
       proot -S . supervisord -n &
-      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" proot -S ./bin/bash #Debian
+      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" proot -S . /bin/bash #Debian
 fi
 fi
 curl -sSLo $HOME/bin/systemctl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl3.py
