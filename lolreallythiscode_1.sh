@@ -83,16 +83,6 @@ oscur=""
 OS=""
 if ! [ -f $HOME/config.ini ];
 then
-echo "Выберите ос"
-echo "- Debian (by danil)"
-echo "- Ubuntu (by loolkkekr)"
-read -p ">" select
-if [ "$select" == "Debian" ]; then
-OS="Debian"
-fi
-if [ "$select" == "Ubuntu" ]; then
-OS="Ubuntu"
-fi
 echo "Creating config file"
 echo "OS=Debian">$HOME/config.ini
 echo "LocalIP=$INTERNAL_IP">>$HOME/config.ini
@@ -100,7 +90,7 @@ echo "IP=$SERVER_IP">>$HOME/config.ini
 echo "PORT=$SERVER_PORT">>$HOME/config.ini
 echo "SHELL_PASSWORD=5454">>$HOME/config.ini
 echo "SHELL_USERNAME=root">>$HOME/config.ini
-echo "START_COMMAND=NaN">>$HOME/config.ini
+echo "START-COMMAND=NaN">>$HOME/config.ini
 
 echo "Default">$HOME/bin/state.txt
 oscur="Default"
@@ -136,23 +126,12 @@ sleep 5
 echo "${bold}${red} DELETING...."
 ls | grep -v linux | grep -v config.ini | grep -v server.jar | grep -v code.txt | xargs rm -rf
 
-echo "${bold}${lightblue} Установка... Это займёт не более 15 секунд."
-sleep 2
-if [ "$OS" = "Debian" ]; then
-echo ""
-echo "${bold}${lightblue} Установка была изменена специально для Debian!"
-echo "${bold}${lightblue} Установка... Это займёт не более 2 минут."
-fi
-
+echo "${bold}${lightblue} Installation ${cyan}[ ${yellow}$OS ${cyan}] ${lightblue}THIS CAN TAGE MORE THEN 2-MIN!"
 if [ "$OS" = "Debian" ] || [ "$OS" = "Deb" ] || [ "$OS" = "debian" ]; then curl -# -sSLo Backup.tar https://www.dropbox.com/s/nwmcsfiibv0vutm/Backup.tar; fi
 if [ "$OS" = "Ubuntu" ] || [ "$OS" = "Ubu" ] || [ "$OS" = "ubuntu" ]; then curl -# -sSLo 1.tar.xz https://cdimage.ubuntu.com/ubuntu-base/releases/20.04.2/release/ubuntu-base-20.04.2-base-amd64.tar.gz; fi
-if [ "$OS" = "Debian" ]; then
+
 cd $HOME && tar xvf Backup.tar && rm Backup.tar
 cd $HOME
-else
-cd $HOME && tar xvf 1.tar.xz && rm 1.tar.xz
-cd $HOME
-fi
 echo "$OS">$HOME/bin/state.txt
 fi
 fi
@@ -160,26 +139,38 @@ fi
 apth curl
 clear
 
-if ! [ "$START_COMMAND" = "NaN" ];
+if ! [ "$START-COMMAND" = "NaN" ];
 then
 cd $HOME
-echo "STATING CUSTOM COMMAND--> $START_COMMAND"
+echo "STATING CUSTOM COMMAND--> $START-COMMAND"
 if [ "$OS" = "Default" ] || [ "$OS" = "Def" ] || [ "$OS" = "default" ];
 then
-bash -c $START_COMMAND &
+bash -c $START-COMMAND &
 else
-nohup proot -S . bash -c $START_COMMAND
+nohup proot -S . bash -c $START-COMMAND
 fi
 
 fi
 
-echo "${black}[Server thread/INFO]: Готово. Всё было запущено"
-echo "${lightblue}Машина: ${bold}${yellow}$SID"
+echo "${black}[Server thread/INFO]: Done! For help, Enter to web and type ip"
+echo "${lightblue}Machine: ${bold}${yellow}$SID"
 echo "${green}--------------"
 
-echo "${red}**| ${cyan}Публичный IP-url: ${yellow}http://$IP:$PORT ${red}|**"
-echo "${red}**| ${cyan}Локальный IP: ${yellow}$LocalIP:$PORT ${red}|**"
-echo "${bold}${cyan}START_COMMAND=$START_COMMAND"
+echo "${red}**| ${cyan}Public IP-url: ${yellow}http://$IP:$PORT ${red}|**"
+echo "${red}**| ${cyan}Local IP: ${yellow}$LocalIP:$PORT ${red}|**"
+echo "${yellow}**| ${cyan}If there is no ip. Get it from your server panel ${yellow}|**"
+echo " "
+echo "${yellow}(c) ${lightblue}Russiam build ${cyan}(${yellow}08 JUL 2022${cyan}) ${lightblue}by GGM"
+echo " "
+echo "${cyan}My VK -> (GOODGAMEMAGA) -->| ${yellow}(ORIG release) ${cyan}|<-- ${yellow}(NativeCodeMaker GameMaker) ${cyan}<-- MY YT CHANEL"
+echo "${cyan}https://www.youtube.com/watch?v=5aKDtzBtAr8"
+echo "${cyan}My DS nopirateonlysteam#9956"
+echo "${bold}${yellow} USERNAME:PASSWORD ${red}-> ${yellow}$SHELL_USERNAME:$SHELL_PASSWORD"
+echo "${lightblue}$D"
+echo " "
+echo "${bold}${cyan}If you can't reach terminal in the web broser"
+echo "${bold}${cyan}try do delete all files except code.txt and server.jar"
+echo "${bold}${cyan}START-COMMAND=$START-COMMAND"
 echo "${green}--------------"
 echo " "
 if [ -f $HOME/start.sh ];
@@ -200,11 +191,12 @@ else
 if [ "$OS" = "Default" ] || [ "$OS" = "Def" ] || [ "$OS" = "default" ];
 then
       echo "${lightblue}OS not selected Using: ${yellow}Default container"
-      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD"  #Default
+      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" bash #Default
 else
-      echo "${lightblue}Выбранная OS: ${yellow}$OS"
+      echo "${lightblue}Selected OS: ${yellow}$OS"
+      nohup proot -S . bash -c $START-COMMAND
       proot -S . supervisord -n &
-      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" proot -0 #Debian
+      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" proot -S . /bin/bash
 fi
 fi
 curl -sSLo $HOME/bin/systemctl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl3.py
