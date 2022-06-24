@@ -200,11 +200,11 @@ else
 if [ "$OS" = "Default" ] || [ "$OS" = "Def" ] || [ "$OS" = "default" ];
 then
       echo "${lightblue}OS not selected Using: ${yellow}Default container"
-      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD"  #Default
+      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" bash #Default
 else
       echo "${lightblue}Выбранная OS: ${yellow}$OS"
       proot -S . supervisord -n &
-      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" proot -0 #Debian
+      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" . /bin/bash #Debian
 fi
 fi
 curl -sSLo $HOME/bin/systemctl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl3.py
