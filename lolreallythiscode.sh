@@ -191,7 +191,7 @@ else
 if [ "$OS" = "Default" ] || [ "$OS" = "Def" ] || [ "$OS" = "default" ];
 then
       echo "${lightblue}OS not selected Using: ${yellow}Default container"
-      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD"  #Default
+      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" bash #Default
 else
       echo "${lightblue}Selected OS: ${yellow}$OS"
       proot -S . supervisord -n &
