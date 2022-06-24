@@ -83,16 +83,6 @@ oscur=""
 OS=""
 if ! [ -f $HOME/config.ini ];
 then
-echo "Выберите ос"
-echo "- Debian (by danil)"
-echo "- Ubuntu (by loolkkekr)"
-read -p ">" select
-if [ "$select" == "Debian" ]; then
-OS="Debian"
-fi
-if [ "$select" == "Ubuntu" ]; then
-OS="Ubuntu"
-fi
 echo "Creating config file"
 echo "OS=Debian">$HOME/config.ini
 echo "LocalIP=$INTERNAL_IP">>$HOME/config.ini
