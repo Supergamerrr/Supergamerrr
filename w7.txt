@@ -67,13 +67,13 @@ if [ "$select" == "reinstall" ]; then
 	echo "Установка ngrok..."
 	wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip > /dev/null 2>&1
 	unzip ngrok-stable-linux-amd64.zip > /dev/null 2>&1
-    read -p "Напишите свой токен Ngrok. Вы можете узнать ваш токен тут: https://supergamerrr.github.io/Supergamerrr/page1.html" ngrok
+    echo "Напишите свой токен Ngrok. Вы можете узнать ваш токен тут: https://supergamerrr.github.io/Supergamerrr/page1.html"
 	read -p "> " ngrok
 	echo "ngroktoken=$ngrok">>windows.ini
     ./ngrok authtoken $ngrok
 	nohup ./ngrok tcp 3388 &>/dev/null &
     echo "Установка программы qemu что-бы создать и запустить виртуальную машину."
-	apt install qemu-kvm qemu
+	apt install qemu-kvm qemu -y
     clear
     echo "Давайте теперь настройм виртуальную машину!"
     sleep 2

@@ -4,6 +4,7 @@ read -p "> " select2
 if [ "$select2" == "Y" ]; then
 	echo "apt update... Просьба подождать..."
 	apt update
+	apt install curl -y
 	#if ! [ -f w7x64.img ];
 	#then
     	 #echo "Образ Windows 7 не найден или вы вообще её не устанавливали?"
