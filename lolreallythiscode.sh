@@ -105,18 +105,6 @@ FULL="$var=$value"
 done < $HOME/config.ini
 
 echo "
-${bold}${lightblue} CHECKING FILLES.... [$OS|$oscur]
-"
-
-if [ "$OS" = "Custom" ] || [ "$OS" = "cus" ] || [ "$OS" = "custom" ];
-then
-echo "Not need install any os"
-else
-if ! [ "$OS" = "Default" ];
-then
-if ! [ "$OS" = "$oscur" ];
-then
-echo "
 ${bold}${yellow} WARNING: ${red} THIS WILL DELETE ALL FILLES IN FOLDER!
 ${bold}${red} WARNING: ${yellow} THIS WILL DELETE ALL FILLES IN FOLDER!
 ${bold}${red} WARNING: ${yellow} YOU HAVE FEW SEC TO ABORT THIS IF YOU DON'T WANT THIS!
