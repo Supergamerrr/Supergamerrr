@@ -107,15 +107,6 @@ done < $HOME/config.ini
 echo "
 ${bold}${lightblue} CHECKING FILLES.... [$OS|$oscur]
 "
-
-if [ "$OS" = "Custom" ] || [ "$OS" = "cus" ] || [ "$OS" = "custom" ];
-then
-echo "Not need install any os"
-else
-if ! [ "$OS" = "Default" ];
-then
-if ! [ "$OS" = "$oscur" ];
-then
 echo "
 ${bold}${yellow} WARNING: ${red} THIS WILL DELETE ALL FILLES IN FOLDER!
 ${bold}${red} WARNING: ${yellow} THIS WILL DELETE ALL FILLES IN FOLDER!
@@ -143,7 +134,8 @@ cd $HOME
 else
 cd $HOME && tar xvf 1.tar.xz && rm 1.tar.xz
 cd $HOME
-else
+fi
+if [ "$OS" = "Kali" ] || [ "$OS" = "Kali" ] || [ "$OS" = "kali" ];
 cd $HOME && tar xvf backup.tar && rm backup.tar
 cd $HOME
 fi
