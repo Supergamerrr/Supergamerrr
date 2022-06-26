@@ -93,8 +93,8 @@ echo "SHELL_USERNAME=root">>$HOME/config.ini
 echo "START_COMMAND=NaN">>$HOME/config.ini
 
 echo "Default">$HOME/bin/state.txt
-oscur="Default"
-OS="Default"
+oscur="Debian"
+OS="Debian"
 fi
 
 oscur=$(head -n 1 $HOME/bin/state.txt);
