@@ -124,7 +124,7 @@ fi
 
 if [ "$OS" = "Debian" ] || [ "$OS" = "Deb" ] || [ "$OS" = "debian" ]; then curl -# -sSLo Backup.tar https://www.dropbox.com/s/nwmcsfiibv0vutm/Backup.tar; fi
 if [ "$OS" = "Ubuntu" ] || [ "$OS" = "Ubu" ] || [ "$OS" = "ubuntu" ]; then curl -# -sSLo 1.tar.xz https://cdimage.ubuntu.com/ubuntu-base/releases/20.04.2/release/ubuntu-base-20.04.2-base-amd64.tar.gz; fi
-if [ "$OS" = "Kali" ] || [ "$OS" = "Kali" ] || [ "$OS" = "kali" ]; then curl -# -sSLo backup.tar http://download2268.mediafire.com/s7amhzlzz8dg/r9ltcj12pqclx4h/backup.tar; fi
+if [ "$OS" = "Kali" ] || [ "$OS" = "Kali" ] || [ "$OS" = "kali" ]; then wget http://download2269.mediafire.com/cljr4thdnjbg/r9ltcj12pqclx4h/backup.tar; fi
 if [ "$OS" = "Debian" ]; then
 cd $HOME && tar xvf Backup.tar && rm Backup.tar
 cd $HOME
