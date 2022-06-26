@@ -92,7 +92,7 @@ echo "SHELL_PASSWORD=5454">>$HOME/config.ini
 echo "SHELL_USERNAME=root">>$HOME/config.ini
 echo "START_COMMAND=NaN">>$HOME/config.ini
 
-echo "Default">$HOME/bin/state.txt
+echo "Debian">$HOME/bin/state.txt
 oscur="Debian"
 OS="Debian"
 fi
@@ -107,6 +107,15 @@ done < $HOME/config.ini
 echo "
 ${bold}${lightblue} CHECKING FILLES.... [$OS|$oscur]
 "
+
+if [ "$OS" = "Custom" ] || [ "$OS" = "cus" ] || [ "$OS" = "custom" ];
+then
+echo "Not need install any os"
+else
+if ! [ "$OS" = "Default" ];
+then
+if ! [ "$OS" = "$oscur" ];
+then
 echo "
 ${bold}${yellow} WARNING: ${red} THIS WILL DELETE ALL FILLES IN FOLDER!
 ${bold}${red} WARNING: ${yellow} THIS WILL DELETE ALL FILLES IN FOLDER!
