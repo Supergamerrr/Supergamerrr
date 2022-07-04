@@ -36,6 +36,7 @@ if [ "$select" == "config" ]; then
     	echo "Windows 7 не запустится если больше 192 гб (196608 мб). "
 	read -p "> " RAM
     	echo "RAM=$RAM">>windows.ini
+    fi
     if [ "$select" == "cpu" ]; then
 		clear
    	 	echo "---------------------------------------------------"
