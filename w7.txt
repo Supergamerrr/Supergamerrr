@@ -77,7 +77,6 @@ if [ "$select" == "reinstall" ]; then
 	read -p "> " ngrok
 	echo "ngroktoken=$ngrok">>windows.ini
     ./ngrok authtoken $ngrok
-	nohup ./ngrok tcp 3388 &>/dev/null &
     echo "Установка программы qemu что-бы создать и запустить виртуальную машину."
 	apt install qemu-kvm qemu -y
     clear
@@ -114,11 +113,14 @@ fi
 #echo "line empty"
 #fi
 #done < $HOME/windows.ini
+clear
+echo "Подождите... Идёт подготовка..."
+nohup ./ngrok tcp 3388 &>/dev/null &
+sleep 4
 RAM2=M
-echo $RAM$RAM2
-echo "Вот ваш IP! Если его тут нету то подождите 5-15 секунд."
+echo "-- Информация --"
+echo "Оперативная память: $RAM$RAM2"
 curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"tcp:..([^"]*).*/\1/p'
-echo "Нажми Enter что-бы начать запуск Windows 7. Не забудь что Ctrl + C это завершение скрипта :)"
 echo "Перед подключением подожди хотя-бы 2 минуты что-бы Windows 7 запустилась."
 read -p "> "
 qemu-system-x86_64 -hda w7x64.img -m $RAM$RAM2 -smp cores=$CORES,threads=$THREADS -net user,hostfwd=tcp::3388-:3389 -net nic -object rng-random,id=rng0,filename=/dev/urandom -device virtio-rng-pci,rng=rng0 -vga vmware -nographic
