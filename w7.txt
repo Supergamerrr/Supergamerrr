@@ -1,7 +1,3 @@
-echo "Обратите внимания!"
-echo "Уже совсем скоро будет новое обновление которое позволит вам установить Linux, Debian, Windows, и т.д."
-echo "Проверяйте обновление каждый раз при запуске!"
-exit
 while read -r var value; do
 FULL="$var=$value"
   export $var
