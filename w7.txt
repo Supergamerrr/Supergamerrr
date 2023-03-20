@@ -6,13 +6,29 @@ clear
 echo "---------------------------------------------------"
 echo "Напишите любую из списка команд. Что-бы начать запуск Windows 7 просто нажмите Enter."
 echo "update - Проверить или установить обновления скрипта. Рекомендую делать это каждый день."
-echo "reinstall - Запустить установщик. Пишите данную команду если по каким то причинам Windows 7 отказывается запускаться."
+echo "reinstallos - Переустановить Windows 7."
+echo "reinstall Сбросить все настройки и переустановить Windows 7 ."
 echo "config - Изменить настройки CPU,RAM,VGA виртуальной машины."
 echo "---------------------------------------------------"
 read -p "> " select
 if [ "$select" == "update" ]; then
-echo "Напиши ./w7.sh что-бы обновить скрипт"
-    exit
+echo "Обновляем скрипт..."
+./w7.sh
+exit
+fi
+if [ "$select" == "reinstallos" ]; then
+	echo "Установка была запущена. Не выключайте сервер, закрывайте страницу/терминал. Время установки зависит от скорости интернета."
+    echo "Установка образа Windows 7 начнётся через несколько секунд."
+    sleep 6
+	wget -O w7x64.img https://bit.ly/akuhnetw7X64
+	clear
+	echo "Операционная система была переустановлена. Запустить её сейчас? Y/N"
+	read -p "> " select
+	if [ "$select" == "N" ]; then
+		echo "Для запуска операционной системы используйте команду ./startw7.sh"
+		exit
+    fi
+	echo "Запуск..."
 fi
 if [ "$select" == "config" ]; then
     clear
@@ -26,7 +42,7 @@ if [ "$select" == "config" ]; then
     read -p "> " select
     if [ "$select" == "info" ]; then
     	echo "Образ: Windows 7 (Да! Ты правильно думаешь! Скоро можно будет выбрать любую ос!)"
-      echo "VGA: По умолчанию стоит VMware."
+        echo "VGA: По умолчанию стоит VMware."
     	echo "Процессор: $CORES ядер, $THREADS потоков."
     	echo "Оперативная память: $RAM мб."
         exit
@@ -115,6 +131,7 @@ fi
 #done < $HOME/windows.ini
 clear
 echo "Подождите... Идёт подготовка..."
+./ngrok authtoken $ngroktoken
 nohup ./ngrok tcp 3388 &>/dev/null &
 sleep 4
 RAM2=M
