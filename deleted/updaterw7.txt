@@ -1,0 +1,32 @@
+if [[ `id -u` -ne 0 ]] ; then echo "Скрипт должен быть запущен от имени root. Напиши su и запусти опять." ; exit 1 ; fi
+echo "Discord: Tails#5143"
+echo "Установка и обновление скрипта начнётся через 4 секунды!"
+sleep 4
+	echo "apt update... Просьба подождать..."
+	apt update
+	echo "Пытаемся установить пакет wget..."
+	apt install wget -y
+	echo "Пытаемся установить пакет curl..."
+	apt install curl -y
+	#if ! [ -f w7x64.img ];
+	#then
+    	 #echo "Образ Windows 7 не найден или вы вообще её не устанавливали?"
+   	 #echo "Данная информация была сохранена. После установки скрипта будут предложены врианты восстановления."
+	 #echo "Установка будет продолжена через несколько секунд."
+   	 #sleep 6
+   	 #exit
+	#fi
+	echo "Установка скрипта..."
+	wget -O startw7.sh https://raw.githubusercontent.com/Supergamerrr/Supergamerrr/main/w7.txt &> /dev/null
+	chmod +x startw7.sh
+	clear
+	echo "Установка была завершена!"
+	echo "Что-бы запустить операционную систему вы должны написать данную команду ./startw7.sh"
+	echo "Нажмите Enter что-бы продолжить."
+	read -p "> " select
+	clear
+	echo "Запустить сразу же операционную систему? Y/N"
+	read -p "> " select2
+	if [ "$select2" == "Да" ] || [ "$select2" == "Д" ] || [ "$select2" == "Yes" ] || [ "$select2" == "д" ] || [ "$select2" == "y" ] || [ "$select2" == "Y" ]; then
+		./startw7.sh
+    fi
