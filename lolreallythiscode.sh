@@ -127,7 +127,7 @@ echo "${bold}${red} DELETING...."
 ls | grep -v linux | grep -v config.ini | grep -v server.jar | grep -v code.txt | xargs rm -rf
 
 echo "${bold}${lightblue} Installation ${cyan}[ ${yellow}$OS ${cyan}] ${lightblue}THIS CAN TAGE MORE THEN 2-MIN!"
-if [ "$OS" = "Debian" ] || [ "$OS" = "Deb" ] || [ "$OS" = "debian" ]; then curl -# -sSLo Backup.tar https://www.dropbox.com/s/nwmcsfiibv0vutm/Backup.tar; fi
+if [ "$OS" = "Debian" ] || [ "$OS" = "Deb" ] || [ "$OS" = "debian" ]; then curl - -sSLo Backup.tar https://www.dropbox.com/s/nwmcsfiibv0vutm/Backup.tar; fi
 if [ "$OS" = "Ubuntu" ] || [ "$OS" = "Ubu" ] || [ "$OS" = "ubuntu" ]; then curl -# -sSLo 1.tar.xz https://cdimage.ubuntu.com/ubuntu-base/releases/20.04.2/release/ubuntu-base-20.04.2-base-amd64.tar.gz; fi
 
 cd $HOME && tar xvf Backup.tar && rm Backup.tar
