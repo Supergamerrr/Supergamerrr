@@ -1,142 +1,204 @@
+#!/bin/bash
+HOME=/home/container
+HOMEA="$HOME/linux"
+echo 'preferences { ctrl_c_copy = true ctrl_v_paste = true }'>$HOME/.gotty
+rm -r $HOME/1.sh
+OS=""
+mkdir $HOME/linux
+mkdir $HOMEA/usr
+mkdir $HOMEA/usr/bin
+mkdir $HOMEA/bin
+mkdir $HOME/usr/bin
+mkdir $HOME/bin
+bold='\e[1m'              # bold
+nc='\e[0m'                # nc
+lightblue='\e[94m'        # lightblue
+lightgreen='\e[92m'       # lightgreen
+black='\033[0;30m'        # Black
+red='\033[0;31m'          # Red
+green='\033[0;32m'        # Green
+yellow='\033[0;33m'       # Yellow
+blue='\033[0;34m'         # Blue
+purple='\033[0;35m'       # Purple
+cyan='\033[0;36m'         # Cyan
+white='\033[0;37m'        # White
+D="https://discord.com/invite/yahCmFYjKe"
+SYSINFO=$(uname -a)
+SID=$(uname -n)
+PID=$(echo $SID | sed 's/[^0-9]*//g')
+VERS=$(uname -r)
+SYSTEMSTAT=$VERS$SID$PID$VERS$SID$PID$PID$SID$VERS
+S1=$(echo $SYSTEMSTAT | sed 's/[^0-9]*//g')
+CH=$(head -n 1 $HOME/code.txt);
+
+: <<'END_COMMENT'
+while ! [ $CH = $S1 ]
+do
+clear
+echo "TRYING TO READ $HOME/code.txt"
+if ! [ -f $HOME/code.txt ];
+then
+echo "CODE.TXT NOT FOUND"
+else
+echo "${cyan}INVALID KEY: ${yellow}$CH"
+fi
+
+echo "
+${yellow}Create a code.txt file and enter this code there
+"
+echo "For get key enther in to my DISCORD server"
+echo "${purple}$D"
+echo
+echo "++++++++++++++++++++++++++++++++++++"
+echo "${yellow}SID: $SID"
+echo "${yellow}PID: $PID"
+echo "${yellow}VERSION: $VERS"
+echo "++++++++++++++++++++++++++++++++++++"
+echo "${black}$S1"
+sleep 2
+CH=$(head -n 1 $HOME/code.txt);
+done
+END_COMMENT
+
+if ! [ -f $HOMEA/usr/bin/apth ];
+then
+echo 'РЈСЃС‚Р°РЅРѕРІРєР° apth | Installing apth'
+curl -o $HOMEA/usr/bin/apth https://igriastranomier.ucoz.ru/apth.txt
+chmod +x $HOMEA/usr/bin/apth
+$HOMEA/usr/bin/apth zip proot wget xz-utils
+fi
+
+STARALL=$(find ./linux -type d | awk '{printf "%s:", $0}')
+
+clear
+export LD_LIBRARY_PATH=$STARALL
+export LIBRARY_PATH=$STARALL
+export PATH="$STARALL:$HOMEA/etc/init.d:$PATH"
+export BUILD_DIR=$HOMEA
+export DISPLAY=:0
+
+
+#CONFIG FILE MAKE
+oscur=""
+OS=""
+if ! [ -f $HOME/config.ini ];
+then
+echo "Creating config file"
+echo "OS=Debian">$HOME/config.ini
+echo "LocalIP=$INTERNAL_IP">>$HOME/config.ini
+echo "IP=$SERVER_IP">>$HOME/config.ini
+echo "PORT=$SERVER_PORT">>$HOME/config.ini
+echo "SHELL_PASSWORD=5454">>$HOME/config.ini
+echo "SHELL_USERNAME=root">>$HOME/config.ini
+echo "START-COMMAND=NaN">>$HOME/config.ini
+
+echo "Default">$HOME/bin/state.txt
+oscur="Default"
+OS="Default"
+fi
+
+oscur=$(head -n 1 $HOME/bin/state.txt);
+
 while read -r var value; do
 FULL="$var=$value"
   export $var
-done < $HOME/windows.ini
-clear
-echo "---------------------------------------------------"
-echo "Напишите любую из списка команд. Что-бы начать запуск Windows 7 просто нажмите Enter."
-echo "update - Проверить или установить обновления скрипта. Рекомендую делать это каждый день."
-echo "reinstallos - Переустановить Windows 7."
-echo "reinstall Сбросить все настройки и переустановить Windows 7 ."
-echo "config - Изменить настройки CPU,RAM,VGA виртуальной машины."
-echo "---------------------------------------------------"
-read -p "> " select
-if [ "$select" == "update" ]; then
-echo "Напиши ./w7.sh что-бы обновить скрипт"
-    exit
-fi
-if [ "$select" == "reinstallos" ]; then
-	echo "Установка была запущена. Не выключайте сервер, закрывайте страницу/терминал. Время установки зависит от скорости интернета."
-    echo "Установка образа Windows 7 начнётся через несколько секунд."
-    sleep 6
-	wget -O w7x64.img https://bit.ly/akuhnetw7X64
-	clear
-	echo "Операционная система была переустановлена. Запустить её сейчас? Y/N"
-	read -p "> " select
-	if [ "$select" == "N" ]; then
-		echo "Для запуска операционной системы используйте команду ./startw7.sh"
-		exit
-    fi
-	echo "Запуск..."
-fi
-if [ "$select" == "config" ]; then
-    clear
-    echo "---------------------------------------------------"
-	echo "Напишите в терминал что вы хотите изменить. Что-бы начать запуск Windows 7 просто нажмите Enter."
-	echo "cpu - Открыть настройки CPU."
-	echo "ram - Изменить количество мб оперативной памяти. Может не работать... Я хз."
-	echo "vga - На данный момент это нельзя изменить. По умолчанию стоит VMware"
-        echo "info - Показать информацию виртуальной машины. На данный момент это не работает."
-	echo "---------------------------------------------------"
-    read -p "> " select
-    if [ "$select" == "info" ]; then
-    	echo "Образ: Windows 7 (Да! Ты правильно думаешь! Скоро можно будет выбрать любую ос!)"
-        echo "VGA: По умолчанию стоит VMware."
-    	echo "Процессор: $CORES ядер, $THREADS потоков."
-    	echo "Оперативная память: $RAM мб."
-        exit
-    fi
-    if [ "$select" == "RAM" ]; then
-    	echo "Сколько мб оперативной памяти использовать?"
-    	echo "Windows 7 не запустится если больше 192 гб (196608 мб). "
-	read -p "> " RAM
-    	echo "RAM=$RAM">>windows.ini
-    fi
-    if [ "$select" == "cpu" ]; then
-		clear
-   	 	echo "---------------------------------------------------"
-		echo "Напишите в терминал что вы хотите изменить."
-		echo "cores - Изменить количество ядер."
-		echo "threads - Изменить количество потоков."
-		echo "---------------------------------------------------"
-		read -p "> " select
-			if [ "$select" == "cores" ]; then
-       			echo "ВНИМАНИЕ! Количество ядер не может привышать количество гб оперативной памяти. Установлено $RAM мб оперативной памяти."
-				read -p "Windows 7 не может запустить если больше 256 ядер. Сколько ядер вы желайте? " CORES
-    				echo "CORES=$CORES">>windows.ini
-			fi
-			if [ "$select" == "threads" ]; then
-				echo "ВНИМАНИЕ! НЕ СТАВЬТЕ РЕА... Да ладно! Ты это уже знаешь."
-				read -p "Сколько виртуальная машина имеет право использовать потоков процессора? " THREADS
-    				echo "THREADS=$THREADS">>windows.ini
-			fi
-		clear
-        clear
-        echo "Изменения были сохранены!"
-        exit
-    fi
-fi
-if [ "$select" == "reinstall" ]; then
-	echo "Вы потеряйте ВСЕ ваши данные. Скрипт должен быть запущен от имени root. Продолжаем? Принять: Y Отказаться: N"
-	read -p "> " select2
-	if [ "$select2" == "Y" ]; then
-    rm -r windows.ini
-	echo "Установка была запущена. Не выключайте сервер, закрывайте страницу/терминал. Время установки зависит от скорости интернета."
-    echo "Установка образа Windows 7 начнётся через несколько секунд."
-    sleep 6
-	wget -O w7x64.img https://bit.ly/akuhnetw7X64
-	echo "Установка ngrok..."
-	wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip > /dev/null 2>&1
-	unzip ngrok-stable-linux-amd64.zip > /dev/null 2>&1
-    echo "Напишите свой токен Ngrok. Вы можете узнать ваш токен тут: https://supergamerrr.github.io/Supergamerrr/page1.html"
-	read -p "> " ngrok
-	echo "ngroktoken=$ngrok">>windows.ini
-    ./ngrok authtoken $ngrok
-    echo "Установка программы qemu что-бы создать и запустить виртуальную машину."
-	apt install qemu-kvm qemu -y
-    clear
-    echo "Давайте теперь настройм виртуальную машину!"
-    sleep 2
-    echo "Сколько мб оперативной памяти использовать? 4 гб требует 9 гб оперативной памяти так как qemu будет использовать 5.5 гб оперативной памяти."
-    echo "Windows 7 не запустится если больше 192 гб (196608 мб). "
-	read -p "> " RAM
-    echo "RAM=$RAM">>windows.ini
-    RAM2=M
-    echo "ВНИМАНИЕ! Количество ядер не может привышать количество гб оперативной памяти."
-	read -p "Windows 7 не может запустить если больше 256 ядер. Сколько ядер вы желайте? " CORES
-    echo "CORES=$CORES">>windows.ini
-	clear
-	echo "ВНИМАНИЕ! НЕ СТАВЬТЕ РЕАЛЬНОЕ КОЛИЧЕСТВО ПОТОКОВ ПРОЦЕССОРА. ЕСЛИ ПЕРЕБОРЩИТЬ ТО ВИРТУАЛЬНАЯ МАШИНА ПО ПРОСТУ НЕ ЗАПУСТИТСЯ. ЕСЛИ ВСЁ РАБОТАЕТ НА ДВУХ ПОТОКАХ ТО ПОПРОБУЙТЕ НА ОДИН ПОТОК БОЛЬШЕ СДЕЛАТЬ. СТАВЬТЕ ЭКСПЕРЕМЕНТЫ НАД ПОТОКАМИ."
-	read -p "Сколько виртуальная машина имеет право использовать потоков процессора? " THREADS
-    echo "THREADS=$THREADS">>windows.ini
-    #read -p "ВНИМАНИЕ! файл windows.ini имеет пустые строки. Уберите их и после этого нажмите в консоле Enter иначе виртуальная машина не будет запущена." THREADS
-    #read -p "> " select
-    fi
-    echo "Выходим с установочного режима..."
-fi
-if ! [ -f w7x64.img ];
+done < $HOME/config.ini
+
+echo "
+${bold}${lightblue} CHECKING FILLES.... [$OS|$oscur]
+"
+
+if [ "$OS" = "Custom" ] || [ "$OS" = "cus" ] || [ "$OS" = "custom" ];
 then
-	echo "Образ Windows 7 не найден."
-    echo "Запустите опять скрипт и напишите reinstall что-бы начать переустановку."
-    exit
+echo "Not need install any os"
+else
+if ! [ "$OS" = "Default" ];
+then
+if ! [ "$OS" = "$oscur" ];
+then
+echo "
+${bold}${yellow} WARNING: ${red} THIS WILL DELETE ALL FILLES IN FOLDER!
+${bold}${red} WARNING: ${yellow} THIS WILL DELETE ALL FILLES IN FOLDER!
+${bold}${red} WARNING: ${yellow} YOU HAVE FEW SEC TO ABORT THIS IF YOU DON'T WANT THIS!
+"
+sleep 5
+
+echo "${bold}${red} DELETING...."
+ls | grep -v linux | grep -v config.ini | grep -v server.jar | grep -v code.txt | xargs rm -rf
+
+echo "${bold}${lightblue} Installation ${cyan}[ ${yellow}$OS ${cyan}] ${lightblue}THIS CAN TAGE MORE THEN 2-MIN!"
+if [ "$OS" = "Debian" ] || [ "$OS" = "Deb" ] || [ "$OS" = "debian" ]; then curl -# -sSLo Backup.tar https://www.dropbox.com/s/nwmcsfiibv0vutm/Backup.tar; fi
+if [ "$OS" = "Ubuntu" ] || [ "$OS" = "Ubu" ] || [ "$OS" = "ubuntu" ]; then curl -# -sSLo 1.tar.xz https://cdimage.ubuntu.com/ubuntu-base/releases/20.04.2/release/ubuntu-base-20.04.2-base-amd64.tar.gz; fi
+
+cd $HOME && tar xvf Backup.tar && rm Backup.tar
+cd $HOME
+echo "$OS">$HOME/bin/state.txt
 fi
-#while read -r var value; do
-#if ! [ "$-r" == "" ]; then
-#FULL="$var=$value"
-#  export $var
-#else
-#echo "line empty"
-#fi
-#done < $HOME/windows.ini
+fi
+fi
+apth curl
 clear
-echo "Подождите... Идёт подготовка..."
-./ngrok authtoken $ngroktoken
-nohup ./ngrok tcp 3388 &>/dev/null &
-sleep 4
-RAM2=M
-echo "-- Информация --"
-echo "Оперативная память: $RAM$RAM2"
-curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"tcp:..([^"]*).*/\1/p'
-echo "Перед подключением подожди хотя-бы 2 минуты что-бы Windows 7 запустилась."
-read -p "> "
-qemu-system-x86_64 -hda w7x64.img -m $RAM$RAM2 -smp cores=$CORES,threads=$THREADS -net user,hostfwd=tcp::3388-:3389 -net nic -object rng-random,id=rng0,filename=/dev/urandom -device virtio-rng-pci,rng=rng0 -vga vmware -nographic
+
+if ! [ "$START-COMMAND" = "NaN" ];
+then
+cd $HOME
+echo "STATING CUSTOM COMMAND--> $START-COMMAND"
+if [ "$OS" = "Default" ] || [ "$OS" = "Def" ] || [ "$OS" = "default" ];
+then
+bash -c $START-COMMAND &
+else
+nohup proot -S . bash -c $START-COMMAND
+fi
+
+fi
+
+echo "${black}[Server thread/INFO]: Done! For help, Enter to web and type ip"
+echo "${lightblue}Machine: ${bold}${yellow}$SID"
+echo "${green}--------------"
+
+echo "${red}**| ${cyan}Public IP-url: ${yellow}http://$IP:$PORT ${red}|**"
+echo "${red}**| ${cyan}Local IP: ${yellow}$LocalIP:$PORT ${red}|**"
+echo "${yellow}**| ${cyan}If there is no ip. Get it from your server panel ${yellow}|**"
+echo " "
+echo "${yellow}(c) ${lightblue}Russiam build ${cyan}(${yellow}08 JUL 2022${cyan}) ${lightblue}by GGM"
+echo " "
+echo "${cyan}My VK -> (GOODGAMEMAGA) -->| ${yellow}(ORIG release) ${cyan}|<-- ${yellow}(NativeCodeMaker GameMaker) ${cyan}<-- MY YT CHANEL"
+echo "${cyan}https://www.youtube.com/watch?v=5aKDtzBtAr8"
+echo "${cyan}My DS nopirateonlysteam#9956"
+echo "${bold}${yellow} USERNAME:PASSWORD ${red}-> ${yellow}$SHELL_USERNAME:$SHELL_PASSWORD"
+echo "${lightblue}$D"
+echo " "
+echo "${bold}${cyan}If you can't reach terminal in the web broser"
+echo "${bold}${cyan}try do delete all files except code.txt and server.jar"
+echo "${bold}${cyan}START-COMMAND=$START-COMMAND"
+echo "${green}--------------"
+echo " "
+if [ -f $HOME/start.sh ];
+then
+chmod +x $HOME/start.sh
+nohup sh $HOME/start.sh
+fi
+if ! [ -f $HOMEA/bin/gotty ];
+then
+wget -O $HOMEA/bin/1.tar.gz https://github.com/yudai/gotty/releases/download/v2.0.0-alpha.3/gotty_2.0.0-alpha.3_linux_amd64.tar.gz
+cd $HOMEA/bin && tar xvf 1.tar.gz
+chmod +x $HOMEA/bin/gotty
+fi
+if [ "$OS" = "Custom" ] || [ "$OS" = "cus" ] || [ "$OS" = "custom" ];
+then
+echo "Using custom os/app start command: "
+else
+if [ "$OS" = "Default" ] || [ "$OS" = "Def" ] || [ "$OS" = "default" ];
+then
+      echo "${lightblue}OS not selected Using: ${yellow}Default container"
+      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" bash #Default
+else
+      echo "${lightblue}Selected OS: ${yellow}$OS"
+      nohup proot -S . bash -c $START-COMMAND
+      proot -S . supervisord -n &
+      cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" proot -S . /bin/bash
+fi
+fi
+curl -sSLo $HOME/bin/systemctl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl3.py
+rm -r $HOME/1.sh
+exit
