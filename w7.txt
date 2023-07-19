@@ -82,36 +82,44 @@ if [ "$select" == "reinstall" ]; then
 	read -p "> " select2
 	if [ "$select2" == "Y" ]; then
     rm -r windows.ini
-	echo "Установка была запущена. Не выключайте сервер, закрывайте страницу/терминал. Время установки зависит от скорости интернета."
-    echo "Установка образа Windows 7 начнётся через несколько секунд."
+	echo "Начинаем переустанавливать. Не выключайте сервер, закрывайте страницу/терминал. Время установки зависит от скорости интернета сервера."
+    echo "Установливаем образ Windows 7 через несколько секунд."
     sleep 6
 	wget -O w7x64.img https://bit.ly/akuhnetw7X64
-	echo "Установка ngrok..."
+	echo "Устанавливаем пакет ngrok..."
 	wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip > /dev/null 2>&1
 	unzip ngrok-stable-linux-amd64.zip > /dev/null 2>&1
+    echo "Устанавливаем пакет qemu, для создания виртуальной машины."
+	apt install qemu-kvm qemu -y
+    clear
+    echo "Количество ядер ЦП: -"
+    echo "Потоков ЦП: -"
+    echo "Оперативная память: - МБ"
     echo "Напишите свой токен Ngrok. Вы можете узнать ваш токен тут: https://supergamerrr.github.io/Supergamerrr/page1.html"
 	read -p "> " ngrok
 	echo "ngroktoken=$ngrok">>windows.ini
     ./ngrok authtoken $ngrok
-    echo "Установка программы qemu что-бы создать и запустить виртуальную машину."
-	apt install qemu-kvm qemu -y
     clear
-    echo "Давайте теперь настройм виртуальную машину!"
-    sleep 2
-    echo "Сколько мб оперативной памяти использовать? 4 гб требует 9 гб оперативной памяти так как qemu будет использовать 5.5 гб оперативной памяти."
-    echo "Windows 7 не запустится если больше 192 гб (196608 мб). "
+    echo "Количество ядер ЦП: -"
+    echo "Потоков ЦП: -"
+    echo "Оперативная память: - М"
+    echo "Сколько оперативной памяти будет в виртуальной машине?"
 	read -p "> " RAM
     echo "RAM=$RAM">>windows.ini
     RAM2=M
-    echo "ВНИМАНИЕ! Количество ядер не может привышать количество гб оперативной памяти."
-	read -p "Windows 7 не может запустить если больше 256 ядер. Сколько ядер вы желайте? " CORES
+    echo "Количество ядер ЦП: -"
+    echo "Потоков ЦП: -"
+    echo "Оперативная память: " RAM
+    echo "Сколько ядер будет доступно для виртуальной машине?"
+	read -p "> " CORES
     echo "CORES=$CORES">>windows.ini
 	clear
-	echo "ВНИМАНИЕ! НЕ СТАВЬТЕ РЕАЛЬНОЕ КОЛИЧЕСТВО ПОТОКОВ ПРОЦЕССОРА. ЕСЛИ ПЕРЕБОРЩИТЬ ТО ВИРТУАЛЬНАЯ МАШИНА ПО ПРОСТУ НЕ ЗАПУСТИТСЯ. ЕСЛИ ВСЁ РАБОТАЕТ НА ДВУХ ПОТОКАХ ТО ПОПРОБУЙТЕ НА ОДИН ПОТОК БОЛЬШЕ СДЕЛАТЬ. СТАВЬТЕ ЭКСПЕРЕМЕНТЫ НАД ПОТОКАМИ."
-	read -p "Сколько виртуальная машина имеет право использовать потоков процессора? " THREADS
+    echo "Количество ядер ЦП: " CORES
+    echo "Потоков ЦП: -"
+    echo "Оперативная память: " RAM
+	echo "Количество потоков будет доступно для виртуальной машины?"
+	read -p "> " THREADS
     echo "THREADS=$THREADS">>windows.ini
-    #read -p "ВНИМАНИЕ! файл windows.ini имеет пустые строки. Уберите их и после этого нажмите в консоле Enter иначе виртуальная машина не будет запущена." THREADS
-    #read -p "> " select
     fi
     echo "Выходим с установочного режима..."
 fi
@@ -138,6 +146,8 @@ RAM2=M
 echo "-- Информация --"
 echo "Оперативная память: $RAM$RAM2"
 curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"tcp:..([^"]*).*/\1/p'
-echo "Перед подключением подожди хотя-бы 2 минуты что-бы Windows 7 запустилась."
+echo "Скопируйте IP и вставьте в программу для подключение по RDP. Нажмите ENTER, чтобы запустить Windows 7."
 read -p "> "
 qemu-system-x86_64 -hda w7x64.img -m $RAM$RAM2 -smp cores=$CORES,threads=$THREADS -net user,hostfwd=tcp::3388-:3389 -net nic -object rng-random,id=rng0,filename=/dev/urandom -device virtio-rng-pci,rng=rng0 -vga vmware -nographic
+clear
+echo "Виртуальная машина завершила свою работу."
