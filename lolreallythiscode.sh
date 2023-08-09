@@ -118,7 +118,7 @@ FULL="$var=$value"
 done < $HOME/config.ini
 
 echo "
-${bold}${lightblue} CHECKING FILLES.... [$OS|$oscur]
+${bold}${lightblue} Проверяем файлы.... [$OS|$oscur]
 "
 
 if [ "$OS" = "Custom" ] || [ "$OS" = "cus" ] || [ "$OS" = "custom" ];
@@ -130,13 +130,13 @@ then
 if ! [ "$OS" = "$oscur" ];
 then
 echo "
-${bold}${yellow} WARNING: ${red} THIS WILL DELETE ALL FILLES IN FOLDER!
-${bold}${red} WARNING: ${yellow} THIS WILL DELETE ALL FILLES IN FOLDER!
-${bold}${red} WARNING: ${yellow} YOU HAVE FEW SEC TO ABORT THIS IF YOU DON'T WANT THIS!
+${bold}${yellow} ВНИМАНИЕ: ${red} Это удалит все файлы на сервере!
+${bold}${red} ВНИМАНИЕ: ${yellow} Это удалит все файлы на сервере!
+${bold}${red} ВНИМАНИЕ: ${yellow} У вас 12 секунд, что-бы прервать удаление файлов!
 "
-sleep 5
+sleep 12
 
-echo "${bold}${red} DELETING...."
+echo "${bold}${red} Удаляем...."
 ls | grep -v linux | grep -v config.ini | grep -v server.jar | grep -v code.txt | xargs rm -rf
 
 echo "${bold}${lightblue} Установка... Это займёт не более 15 секунд."
@@ -202,10 +202,10 @@ echo "Using custom os/app start command: "
 else
 if [ "$OS" = "Default" ] || [ "$OS" = "Def" ] || [ "$OS" = "default" ];
 then
-      echo "${lightblue}OS not selected Using: ${yellow}Default container"
+      echo "${lightblue}OS не установлена! Используем: ${yellow}Default container"
       cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD"  #Default
 else
-      echo "${lightblue}Selected OS: ${yellow}$OS"
+      echo "${lightblue}Выбранная OS: ${yellow}$OS"
       nohup proot -S . bash -c $START-COMMAND
       proot -S . supervisord -n &
       cd $HOME && nohup gotty -a 0.0.0.0 -p $PORT -w -c "$SHELL_USERNAME:$SHELL_PASSWORD" proot -S . /bin/bash
