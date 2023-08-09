@@ -1,3 +1,6 @@
+echo "${bold}${lightblue} Работа скрипта прекратит 2.09.2023. Продолжение выполнение кода будет через 12 секунд. [$OS|$oscur]"
+sleep 12
+
 #!/bin/bash
 HOME=/home/container
 HOMEA="$HOME/linux"
